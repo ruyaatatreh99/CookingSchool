@@ -3,14 +3,14 @@ namespace Cooking.Repos
 {
     public interface IStudent
     {
-        Student signup(Admin admin);
+        Student signup(string email, string password,string phone, string image, string username);
         Student signin(string email, string password);
-        void pickLevel(string level);
-        Class regiserClasses(int classID, int StudentId);
+        void pickLevel(string level, int StudentId);
+        void regiserClasses(int classID, int StudentId);
         List<Class> ViewAllClasses();
-        List<Class> viewRegiseredClasses(int StudentId);
+        List<StudentClass> viewRegiseredClasses(int StudentId);
         List<string> viewMeal();
         void FavoriteMeal(int mealid);
-        List<Mark> ShowCourseMark();
+        List<Mark> ShowClassMark(int StudentId);
     }
 }

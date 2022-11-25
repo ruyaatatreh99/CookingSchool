@@ -46,7 +46,6 @@ namespace Cooking.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("username")
@@ -65,6 +64,10 @@ namespace Cooking.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"));
+
+                    b.Property<string>("ClassTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CourseID")
                         .IsRequired()
@@ -99,12 +102,7 @@ namespace Cooking.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudentID")
-                        .HasColumnType("int");
-
                     b.HasKey("CourseID");
-
-                    b.HasIndex("StudentID");
 
                     b.ToTable("Course");
                 });
@@ -170,9 +168,6 @@ namespace Cooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentID"));
 
-                    b.Property<int?>("ClassId")
-                        .HasColumnType("int");
-
                     b.Property<string>("email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -192,7 +187,6 @@ namespace Cooking.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("username")
@@ -201,9 +195,22 @@ namespace Cooking.Migrations
 
                     b.HasKey("StudentID");
 
+                    b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("Cooking.Model.StudentClass", b =>
+                {
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentID", "ClassId");
+
                     b.HasIndex("ClassId");
 
-                    b.ToTable("Student");
+                    b.ToTable("StudentClass");
                 });
 
             modelBuilder.Entity("Cooking.Model.Teacher", b =>
@@ -230,7 +237,6 @@ namespace Cooking.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("username")
@@ -242,13 +248,6 @@ namespace Cooking.Migrations
                     b.ToTable("Teacher");
                 });
 
-            modelBuilder.Entity("Cooking.Model.Course", b =>
-                {
-                    b.HasOne("Cooking.Model.Student", null)
-                        .WithMany("CourseList")
-                        .HasForeignKey("StudentID");
-                });
-
             modelBuilder.Entity("Cooking.Model.Mark", b =>
                 {
                     b.HasOne("Cooking.Model.Student", null)
@@ -258,23 +257,35 @@ namespace Cooking.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cooking.Model.Student", b =>
+            modelBuilder.Entity("Cooking.Model.StudentClass", b =>
                 {
-                    b.HasOne("Cooking.Model.Class", null)
-                        .WithMany("StudentList")
-                        .HasForeignKey("ClassId");
+                    b.HasOne("Cooking.Model.Class", "Class")
+                        .WithMany("StudentClass")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cooking.Model.Student", "Student")
+                        .WithMany("StudentClass")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Cooking.Model.Class", b =>
                 {
-                    b.Navigation("StudentList");
+                    b.Navigation("StudentClass");
                 });
 
             modelBuilder.Entity("Cooking.Model.Student", b =>
                 {
-                    b.Navigation("CourseList");
-
                     b.Navigation("MarkList");
+
+                    b.Navigation("StudentClass");
                 });
 #pragma warning restore 612, 618
         }

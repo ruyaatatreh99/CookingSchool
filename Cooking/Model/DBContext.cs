@@ -14,6 +14,7 @@ namespace Cooking.Model
         public DbSet<Request> Request { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<Teacher> Teacher { get; set; }
+        public DbSet<StudentClass> StudentClass { get; set; }
 
         protected readonly IConfiguration Configuration;
 
@@ -26,6 +27,10 @@ namespace Cooking.Model
 
             }
             base.OnConfiguring(optionsbuilder);
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StudentClass>().HasKey(sc => new { sc.StudentID, sc.ClassId });
         }
     }
     }

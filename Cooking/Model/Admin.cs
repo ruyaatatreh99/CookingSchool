@@ -21,7 +21,6 @@ namespace Cooking.Model
         public string? username { get; set; }
         [Required]
         public string? phone { get; set; }
-        [Required]
         public string? role { get; set; }
         public string? image { get; set; }
     }

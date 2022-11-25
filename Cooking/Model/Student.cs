@@ -21,11 +21,11 @@ namespace Cooking.Model
         public string? username { get; set; }
         [Required]
         public string? phone { get; set; }
-        [Required]
+
         public string? role { get; set; }
         public string? image { get; set; }
         public string? level { get; set; }
-        public List<Course>  ?CourseList { get; set; }
+        public List<StudentClass>  ? StudentClass { get; set; }
         public List<Mark> ?MarkList { get; set; }
     }
 }

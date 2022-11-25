@@ -30,10 +30,10 @@ namespace Cooking.Controllers
 
         [Route("/teacher/class")]
         [HttpPost]
-        public IActionResult CreateClass([FromBody] Dictionary<string, string> data, int courseID)
+        public IActionResult CreateClass([FromBody] Dictionary<string, string> data, int course_ID )
         {
 
-                Class Class = _teacher.CreateClass(data["teacher_name"],courseID, data["course_name"]);
+                Class Class = _teacher.CreateClass(data["teacher_name"],course_ID, data["course_name"], data["Class_Time"]);
                 if (Class == null) return NotFound(new { errors = "Class already Exists" });
                 else return Ok(new { Class = Class });
            

@@ -17,7 +17,7 @@ namespace Cooking.Repos
         }
         public void AcceptStudent(int studentId, int classId, int teacherID)
         {
-           Request? getrequest = _context.Request.FirstOrDefault(x => x.StudentID== studentId && x.ClassId==classId && x.TeacherID==teacherID);
+            Request? getrequest = _context.Request.FirstOrDefault(x => x.StudentID == studentId && x.ClassId == classId && x.TeacherID == teacherID);
             Student? Student = _context.Student.FirstOrDefault(x => x.StudentID == studentId);
             Class? Class = _context.Class.FirstOrDefault(x => x.ClassId == classId);
             if (getrequest != null)
@@ -28,31 +28,39 @@ namespace Cooking.Repos
             if (Class != null && Student != null)
             {
                 Class.StudentNo++;
-                Class.StudentList.Add(Student);
                 _context.Class.Update(Class);
                 _context.SaveChanges();
+                StudentClass StudentClass = new StudentClass();
+                StudentClass.StudentID = Student.StudentID;
+                StudentClass.ClassId = Class.ClassId;
+                _context.StudentClass.Add(StudentClass);
+                _context.SaveChanges();
+
             }
-           
+
         }
 
-        public Mark AddMark(double markvalue, string studentname,int  classid)
+        public Mark AddMark(double markvalue, string studentname, int classid)
         {
-            Mark mark= new Mark();
-            Student? getstudent = _context.Student.First(x => x.username == studentname );
-            Mark? check = _context.Mark.FirstOrDefault(x => x.StudentID == getstudent.StudentID|| x.CourseID == classid);
+            Mark mark = new Mark();
+            Student? getstudent = _context.Student.First(x => x.username == studentname);
+            Mark? check = _context.Mark.FirstOrDefault(x => x.StudentID == getstudent.StudentID || x.CourseID == classid);
             if (check != null) return null;
             else
             {
                 mark.CourseID = classid;
                 mark.Markvalue = markvalue;
-               mark.StudentID= getstudent.StudentID;
+                mark.StudentID = getstudent.StudentID;
                 _context.Mark.Add(mark);
+                _context.SaveChanges();
+                getstudent.MarkList.Add(mark);
+                _context.Student.Update(getstudent);
                 _context.SaveChanges();
                 return mark;
             }
         }
 
-        public Class CreateClass(string teachername, int courseID, string coursename)
+        public Class CreateClass(string teachername, int courseID, string coursename,string ClassTime)
         {
             Class c = new Class();
             Class? check = _context.Class.FirstOrDefault(x => x.CourseID == courseID || x.TeacherName == teachername);
@@ -63,7 +71,8 @@ namespace Cooking.Repos
                 c.StudentNo = 0;
                 c.CourseID = courseID;
                 c.CourseName = coursename;
-                c.StudentList = new List<Student>();
+                c.ClassTime = ClassTime;
+                c.StudentClass = new List<StudentClass>();
                 _context.Class.Add(c);
                 _context.SaveChanges();
                 return c;
@@ -78,7 +87,7 @@ namespace Cooking.Repos
         public Class GetClass(int ClassID)
         {
             Class Class = _context.Class.First(x => x.ClassId == ClassID);
-            return Class; 
+            return Class;
         }
 
         public Teacher signin(string email, string password)
@@ -100,9 +109,13 @@ namespace Cooking.Repos
         public Mark updateMark(double markvalue, string studentname, int classid)
         {
             Student? getstudent = _context.Student.First(x => x.username == studentname);
-            Mark? mark = _context.Mark.First(x => x.StudentID == getstudent.StudentID && x.CourseID== classid);
-            mark.Markvalue=markvalue;
+            Mark? mark = _context.Mark.First(x => x.StudentID == getstudent.StudentID && x.CourseID == classid);
+            getstudent.MarkList.Remove(mark);
+            mark.Markvalue = markvalue;
             _context.Mark.Update(mark);
+            _context.SaveChanges();
+            getstudent.MarkList.Add(mark);
+            _context.Student.Update(getstudent);
             _context.SaveChanges();
             return mark;
         }
@@ -110,14 +123,7 @@ namespace Cooking.Repos
         public List<Course> viewAllCourse()
         {
             List<Course> AllCourseList;
-            try
-            {
-                AllCourseList = _context.Set<Course>().ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            AllCourseList = _context.Set<Course>().ToList();
             return AllCourseList;
         }
 
@@ -125,18 +131,11 @@ namespace Cooking.Repos
         {
             List<Request> AllRequestList;
             List<Request> TeacherRequestList = new List<Request>();
-            try
-            {
-                AllRequestList = _context.Set<Request>().ToList();
+            AllRequestList = _context.Set<Request>().ToList();
 
             foreach (Request req in AllRequestList)
             {
                 if (req.TeacherID == TeacherID) TeacherRequestList.Add(req);
-            }
-            }
-            catch (Exception)
-            {
-                throw;
             }
             return TeacherRequestList;
         }
@@ -145,39 +144,32 @@ namespace Cooking.Repos
         {
             List<Class> AllClassList;
             List<Class> TeacherClasstList = new List<Class>();
-            try
+            AllClassList = _context.Set<Class>().ToList();
+            Teacher? getTeacher = _context.Teacher.First(x => x.TeacherID == teacherID);
+            foreach (Class Class in AllClassList)
             {
-                AllClassList = _context.Set<Class>().ToList();
-                Teacher? getTeacher = _context.Teacher.First(x => x.TeacherID == teacherID);
-                foreach (Class Class in AllClassList)
-                {
-                    if (Class.TeacherName == getTeacher.username) TeacherClasstList.Add(Class);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                if (Class.TeacherName == getTeacher.username) TeacherClasstList.Add(Class);
             }
             return TeacherClasstList;
         }
 
-   /*     public List<string> viewMeal()
-        {
-            string url = @"https://";
+        /*     public List<string> viewMeal()
+             {
+                 string url = @"https://";
 
-            WebRequest request = WebRequest.Create(url);
+                 WebRequest request = WebRequest.Create(url);
 
-            WebResponse response = request.GetResponse();
+                 WebResponse response = request.GetResponse();
 
-            Stream data = response.GetResponseStream();
+                 Stream data = response.GetResponseStream();
 
-            StreamReader reader = new StreamReader(data);
+                 StreamReader reader = new StreamReader(data);
 
-            // json-formatted string from maps api
-            string responseFromServer = reader.ReadToEnd();
+                 // json-formatted string from maps api
+                 string responseFromServer = reader.ReadToEnd();
 
-            response.Close();
-          
-        }*/
+                 response.Close();
+
+             }*/
     }
 }
