@@ -107,6 +107,52 @@ namespace Cooking.Migrations
                     b.ToTable("Course");
                 });
 
+            modelBuilder.Entity("Cooking.Model.Exam", b =>
+                {
+                    b.Property<int>("ExamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExamId"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ExamId");
+
+                    b.ToTable("Exam");
+                });
+
+            modelBuilder.Entity("Cooking.Model.Favourite", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("mealid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("userid")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Favourite");
+                });
+
             modelBuilder.Entity("Cooking.Model.Mark", b =>
                 {
                     b.Property<int>("id")
@@ -115,7 +161,7 @@ namespace Cooking.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int?>("CourseID")
+                    b.Property<int?>("ClassID")
                         .IsRequired()
                         .HasColumnType("int");
 
@@ -126,6 +172,10 @@ namespace Cooking.Migrations
                     b.Property<int?>("StudentID")
                         .IsRequired()
                         .HasColumnType("int");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 

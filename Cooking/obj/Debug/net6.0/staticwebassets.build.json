@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "KjKM1IzM/KUX8dZu1SNREhthFKMKhmAVmvyhRthbwdQ=",
+  "Hash": "jyrKUIpImJO9ZqX9qw6wmGqiOjntYAMWBOdc2HMh/3M=",
   "Source": "Cooking",
   "BasePath": "_content/Cooking",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "Cooking\\wwwroot",
+      "Source": "Cooking",
+      "ContentRoot": "C:\\Users\\Ru'ya\\source\\repos\\Cooking\\Cooking\\wwwroot\\",
+      "BasePath": "_content/Cooking",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Ru'ya\\source\\repos\\Cooking\\Cooking\\wwwroot\\Upload\\r.jpg",
+      "SourceId": "Cooking",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Ru'ya\\source\\repos\\Cooking\\Cooking\\wwwroot\\",
+      "BasePath": "_content/Cooking",
+      "RelativePath": "Upload/r.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Upload\\r.jpg"
+    }
+  ]
 }

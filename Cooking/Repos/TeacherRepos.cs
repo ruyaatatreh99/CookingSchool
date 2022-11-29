@@ -5,6 +5,7 @@ using Cooking.Controllers;
 using Cooking.Model;
 using System.Text;
 using System.Net;
+using System.Collections.Specialized;
 
 namespace Cooking.Repos
 {
@@ -40,16 +41,17 @@ namespace Cooking.Repos
 
         }
 
-        public Mark AddMark(double markvalue, string studentname, int classid)
+        public Mark AddMark(double markvalue, string studentname, int classid,string status)
         {
             Mark mark = new Mark();
             Student? getstudent = _context.Student.First(x => x.username == studentname);
-            Mark? check = _context.Mark.FirstOrDefault(x => x.StudentID == getstudent.StudentID || x.CourseID == classid);
+            Mark? check = _context.Mark.FirstOrDefault(x => x.StudentID == getstudent.StudentID || x.ClassID == classid);
             if (check != null) return null;
             else
             {
-                mark.CourseID = classid;
+                mark.ClassID = classid;
                 mark.Markvalue = markvalue;
+                mark.status = status;
                 mark.StudentID = getstudent.StudentID;
                 _context.Mark.Add(mark);
                 _context.SaveChanges();
@@ -79,6 +81,13 @@ namespace Cooking.Repos
             }
         }
 
+        public void DeleteStudent(int ClassID, int studentID)
+        {
+            var student = _context.StudentClass.First(x => x.StudentID == studentID  &&  x.ClassId== ClassID);
+            _context.StudentClass.Remove(student);
+            _context.SaveChanges();
+        }
+
         public void FavoriteMeal(int mealid)
         {
             throw new NotImplementedException();
@@ -106,12 +115,13 @@ namespace Cooking.Repos
             }
         }
 
-        public Mark updateMark(double markvalue, string studentname, int classid)
+        public Mark updateMark(double markvalue, string studentname, int classid, string status)
         {
             Student? getstudent = _context.Student.First(x => x.username == studentname);
-            Mark? mark = _context.Mark.First(x => x.StudentID == getstudent.StudentID && x.CourseID == classid);
+            Mark? mark = _context.Mark.First(x => x.StudentID == getstudent.StudentID && x.ClassID == classid);
             getstudent.MarkList.Remove(mark);
             mark.Markvalue = markvalue;
+            mark.status = status;
             _context.Mark.Update(mark);
             _context.SaveChanges();
             getstudent.MarkList.Add(mark);

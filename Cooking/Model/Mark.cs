@@ -11,10 +11,12 @@ namespace Cooking.Model
         [Required(ErrorMessage = "Mark value is required")]
         public double? Markvalue { get; set; }
         [Required]
+        public string? status { get; set; }
+        [Required]
         [ForeignKey("Student")]
         public int? StudentID { get; set; }
         [Required]
-        [ForeignKey("Course")]
-        public int? CourseID { get; set; }
+        [ForeignKey("Class")]
+        public int? ClassID { get; set; }
     }
 }

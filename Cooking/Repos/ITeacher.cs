@@ -7,13 +7,15 @@ namespace Cooking.Repos
         Class CreateClass(string teachername, int courseID, string coursename, string ClassTime);
         List<Request> ViewAllRequest(int TeacherID);
         void AcceptStudent(int studentId, int classId, int teacherID);
-        Mark AddMark(double markvalue, string studentname, int classid);
-        Mark updateMark(double markvalue, string studentname, int classid);
+        Mark AddMark(double markvalue, string studentname, int classid, string status);
+        Mark updateMark(double markvalue, string studentname, int classid, string status);
         List<Course> viewAllCourse();
         List<Class> viewAllTeacherClass(int teacherID);
         Class GetClass( int ClassID);
       //  List<string> viewMeal();
         void FavoriteMeal(int mealid);
-       
+        void DeleteStudent(int ClassID, int studentID);
+
+
     }
 }

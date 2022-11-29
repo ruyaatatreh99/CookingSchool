@@ -81,3 +81,4 @@ C:\Users\Ru'ya\source\repos\Cooking\Cooking\obj\Debug\net6.0\refint\Cooking.dll
 C:\Users\Ru'ya\source\repos\Cooking\Cooking\obj\Debug\net6.0\Cooking.pdb
 C:\Users\Ru'ya\source\repos\Cooking\Cooking\obj\Debug\net6.0\Cooking.genruntimeconfig.cache
 C:\Users\Ru'ya\source\repos\Cooking\Cooking\obj\Debug\net6.0\ref\Cooking.dll
+C:\Users\Ru'ya\source\repos\Cooking\Cooking\bin\Debug\net6.0\Cooking.staticwebassets.runtime.json

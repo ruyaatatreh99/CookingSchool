@@ -10,7 +10,10 @@ namespace Cooking.Model
         public DbSet<Admin> Admin { get; set; }
         public DbSet<Class> Class { get; set; }
         public DbSet<Course> Course { get; set; }
+        public DbSet<Favourite> Favourite { get; set; }
+        
         public DbSet<Mark> Mark { get; set; }
+        public DbSet<Exam> Exam { get; set; }
         public DbSet<Request> Request { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<Teacher> Teacher { get; set; }

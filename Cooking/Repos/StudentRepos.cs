@@ -11,9 +11,41 @@ namespace Cooking.Repos
         {
             _context = context;
         }
-        public void FavoriteMeal(int mealid)
+        public Favourite AddFavourite(int user_id, int meal_id)
         {
-            throw new NotImplementedException();
+            Favourite Favourite = new Favourite();
+            Favourite check = _context.Favourite.FirstOrDefault(x => x.userid == user_id && x.mealid == meal_id);
+            if (check != null) return null;
+            else
+            {
+                
+                Favourite.userid = user_id;
+                Favourite.mealid = meal_id;
+                _context.Favourite.Add(Favourite);
+                _context.SaveChanges();
+                return Favourite;
+            }
+        }
+
+        public void deleteFavourite(int user_id, int meal_id)
+        {
+            var Favourite = _context.Favourite.First(x => x.userid == user_id  && x.mealid == meal_id);
+            _context.Favourite.Remove(Favourite);
+            _context.SaveChanges();
+        }
+
+        public List<Favourite> getFavourite()
+        {
+            List<Favourite> FavouriteList;
+            try
+            {
+                FavouriteList = _context.Set<Favourite>().ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return FavouriteList;
         }
 
         public void pickLevel(string level, int StudentId)
@@ -91,6 +123,13 @@ namespace Cooking.Repos
             }
         }
 
+        public Exam SubmitTask(Exam Exam)
+        {
+            _context.Exam.Add(Exam);
+            _context.SaveChanges(true);
+            return Exam;
+        }
+
         public List<Class> ViewAllClasses()
         {
             List<Class> ClassList;
@@ -103,11 +142,6 @@ namespace Cooking.Repos
                 throw;
             }
             return ClassList;
-        }
-
-        public List<string> viewMeal()
-        {
-            throw new NotImplementedException();
         }
 
         public List<StudentClass> viewRegiseredClasses(int StudentId)
