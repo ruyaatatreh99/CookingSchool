@@ -60,11 +60,11 @@ namespace Cooking.Repos
         {
             var student = _context.Student.First(x => x.StudentID == StudentId);
             var Class = _context.Class.First(x => x.ClassId == classID);
-            var teacher = _context.Teacher.First(x => x.username == Class.TeacherName);
+            var teacher = _context.Employee.First(x => x.username == Class.TeacherName);
             Request Req = new Request();
             Req.StudentID = StudentId;
             Req.StudentNaame = student.username;
-            Req.TeacherID = teacher.TeacherID;
+            Req.TeacherID = teacher.EmpID;
             Req.ClassId = classID;
             _context.Request.Add(Req);
             _context.SaveChanges();

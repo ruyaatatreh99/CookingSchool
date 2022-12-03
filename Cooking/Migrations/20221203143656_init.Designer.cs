@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cooking.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20221128105653_init")]
+    [Migration("20221203143656_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,41 +25,6 @@ namespace Cooking.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Cooking.Model.Admin", b =>
-                {
-                    b.Property<int>("AdminID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"));
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AdminID");
-
-                    b.ToTable("Adminuser");
-                });
-
             modelBuilder.Entity("Cooking.Model.Class", b =>
                 {
                     b.Property<int>("ClassId")
@@ -67,10 +32,6 @@ namespace Cooking.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"));
-
-                    b.Property<string>("ClassTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CourseID")
                         .IsRequired()
@@ -108,6 +69,41 @@ namespace Cooking.Migrations
                     b.HasKey("CourseID");
 
                     b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("Cooking.Model.Employee", b =>
+                {
+                    b.Property<int>("EmpID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpID"));
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EmpID");
+
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("Cooking.Model.Exam", b =>
@@ -264,41 +260,6 @@ namespace Cooking.Migrations
                     b.HasIndex("ClassId");
 
                     b.ToTable("StudentClass");
-                });
-
-            modelBuilder.Entity("Cooking.Model.Teacher", b =>
-                {
-                    b.Property<int>("TeacherID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherID"));
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TeacherID");
-
-                    b.ToTable("Teacher");
                 });
 
             modelBuilder.Entity("Cooking.Model.Mark", b =>

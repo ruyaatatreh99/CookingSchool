@@ -11,24 +11,6 @@ namespace Cooking.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Adminuser",
-                columns: table => new
-                {
-                    AdminID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    role = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Adminuser", x => x.AdminID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Class",
                 columns: table => new
                 {
@@ -37,7 +19,6 @@ namespace Cooking.Migrations
                     TeacherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentNo = table.Column<int>(type: "int", nullable: false),
                     CourseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClassTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -56,6 +37,24 @@ namespace Cooking.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Course", x => x.CourseID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employee",
+                columns: table => new
+                {
+                    EmpID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employee", x => x.EmpID);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,24 +123,6 @@ namespace Cooking.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Teacher",
-                columns: table => new
-                {
-                    TeacherID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    role = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teacher", x => x.TeacherID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Mark",
                 columns: table => new
                 {
@@ -202,10 +183,10 @@ namespace Cooking.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Adminuser");
+                name: "Course");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Employee");
 
             migrationBuilder.DropTable(
                 name: "Exam");
@@ -221,9 +202,6 @@ namespace Cooking.Migrations
 
             migrationBuilder.DropTable(
                 name: "StudentClass");
-
-            migrationBuilder.DropTable(
-                name: "Teacher");
 
             migrationBuilder.DropTable(
                 name: "Class");

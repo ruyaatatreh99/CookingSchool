@@ -4,12 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace Cooking.Model
 {
-    [Table("Adminuser")]
-    public class Admin
+    [Table("Employee")]
+    public class Employee
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AdminID { get; set; }
+        public int EmpID { get; set; }
         [Required(ErrorMessage = "password required")]
         [MinLength(9)]
         

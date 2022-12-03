@@ -12,12 +12,21 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+builder.Services.AddControllers();
 
-
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opton => {
+    opton.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SXkSqsKyNUyvGbnHs7ke2NCq8zQzNLW7mPmHbnZZ")),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
-    opton => {
+   opton => {
         opton.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
         {
          Description="Standard Authorization header using the secret",
@@ -28,16 +37,6 @@ builder.Services.AddSwaggerGen(
         opton.OperationFilter<SecurityRequirementsOperationFilter>();
     }
         );
-builder.Services.AddControllers();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opton => {
-    opton.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SXkSqsKyNUyvGbnHs7ke2NCq8zQzNLW7mPmHbnZZ")),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
 builder.Services.AddDbContext<DBContext>();
 builder.Services.AddScoped<IAdmin, AdminRepos>();
 builder.Services.AddScoped<IStudent, StudentRepos>();

@@ -9,7 +9,7 @@ namespace Cooking.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CourseID { get; set; }
-        [Required(ErrorMessage = "Course name is required")]
+        [Required]
         public string? CourseName{ get; set; }
     }
 }

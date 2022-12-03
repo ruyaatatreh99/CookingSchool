@@ -20,15 +20,15 @@ namespace Cooking.Controllers
                 _teacher = teacher1;
             }
 
-        [Route("/signin")]
+        [Route("/login")]
         [HttpPost]
-        public IActionResult signin([FromBody] Dictionary<string, string> data)
+        public IActionResult login([FromBody] Dictionary<string, string> data)
         {
             try
             {
 
 
-                Teacher Teacher = _teacher.signin(data["email"], data["password"]);
+                Employee Teacher = _teacher.signin(data["email"], data["password"]);
                 if (Teacher == null) return NotFound(new { errors = "email or password invaild" });
                 else
                 {
@@ -69,7 +69,7 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("/request")]
+        [Route("/teacher/request")]
         [HttpGet]
         public IActionResult ViewAllRequest(int Teacher_ID)
         {
@@ -80,7 +80,7 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("/request")]
+        [Route("/teacher/request")]
         [HttpPost]
         [Authorize(Roles = "Teacher")]
         public IActionResult AcceptStudent([FromBody] Dictionary<string, string> data, int class_Id)
@@ -92,30 +92,30 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("/mark")]
+        [Route("/teacher/{class_id}/mark")]
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public IActionResult AddMark([FromBody] Dictionary<string, string> data, int class_Id, string status)
+        public IActionResult AddMark([FromBody] Dictionary<string, string> data, int class_id, string status)
         {
             
-               Mark mark= _teacher.AddMark(Double.Parse(data["mark_value"]),data["student_name"],class_Id, status);
+               Mark mark= _teacher.AddMark(Double.Parse(data["mark_value"]),data["student_name"],class_id, status);
                 if (mark == null) return NotFound(new { errors = "Already Added" });
                 else return Ok(new { mark = mark });
            
         }
 
-        [Route("/mark")]
+        [Route("/teacher/{class_id}/mark")]
         [HttpPut]
         [Authorize(Roles = "Teacher")]
-        public IActionResult updateMark([FromBody] Dictionary<string, string> data, int class_Id, string status)
+        public IActionResult updateMark([FromBody] Dictionary<string, string> data, int class_id, string status)
         {
             
-                Mark mark = _teacher.AddMark(Double.Parse(data["mark_value"]), data["student_name"], class_Id,status);
+                Mark mark = _teacher.AddMark(Double.Parse(data["mark_value"]), data["student_name"], class_id,status);
                 return Ok(new { mark = mark });
            
         }
 
-        [Route("/course")]
+        [Route("/teacher/course")]
         [HttpGet]
         public IActionResult viewAllCourse()
         {
@@ -125,25 +125,27 @@ namespace Cooking.Controllers
             
         }
 
-        [Route("/teacher/class")]
+        [Route("/teacher/{teacher_id}/class")]
         [HttpGet]
-        public IActionResult viewAllTeacherClass(int teacher_ID)
+        public IActionResult viewAllTeacherClass(int teacher_id)
         {
             
-                var Class = _teacher.viewAllTeacherClass( teacher_ID);
+                var Class = _teacher.viewAllTeacherClass( teacher_id);
                 return Ok(new { Classes = Class });
 
         }
 
-        [Route("/teacher/class_teacher")]
+        [Route("/teacher/class/{class_id}")]
         [HttpGet]
-        public IActionResult GetClass(int Class_ID)
+        [Authorize(Roles = "Teacher")]
+        public IActionResult GetClass(int class_id)
         {
            
-                var Class = _teacher.GetClass(Class_ID);
+                var Class = _teacher.GetClass(class_id);
                 return Ok(new { Class = Class });
 
         }
+       
         [Route("/teacher/class/student")]
         [HttpDelete]
         [Authorize(Roles = "Teacher")]

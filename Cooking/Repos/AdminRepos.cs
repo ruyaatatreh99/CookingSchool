@@ -25,10 +25,10 @@ namespace Cooking.Repos
             }
         }
 
-        public Teacher CreateTeacherAccount(Teacher teacher)
+        public Employee CreateTeacherAccount(Employee teacher)
         {
-            Teacher u = new Teacher();
-            Teacher? checkemail = _context.Teacher.FirstOrDefault(x => x.email == teacher.email || x.username == teacher.username);
+            Employee u = new Employee();
+            Employee? checkemail = _context.Employee.FirstOrDefault(x => x.email == teacher.email || x.username == teacher.username);
             if (checkemail != null) return null;
             else
             {
@@ -40,7 +40,7 @@ namespace Cooking.Repos
                else u.image = teacher.image;
                 u.phone = teacher.phone;
                 u.role = "Teacher";
-                _context.Teacher.Add(u);
+                _context.Employee.Add(u);
                 _context.SaveChanges();
                 return u;
             }
@@ -55,8 +55,8 @@ namespace Cooking.Repos
 
         public void deleteTeacher(int teacherID)
         {
-            var Teacher = _context.Teacher.First(x => x.TeacherID == teacherID);
-            _context.Teacher.Remove(Teacher);
+            var Teacher = _context.Employee.First(x => x.EmpID == teacherID);
+            _context.Employee.Remove(Teacher);
             _context.SaveChanges();
         }
 
@@ -88,12 +88,12 @@ namespace Cooking.Repos
             return StudentList;
         }
 
-        public List<Teacher> GetAllTeacher()
+        public List<Employee> GetAllTeacher()
         {
-            List<Teacher> TeacherList;
+            List<Employee> TeacherList;
             try
             {
-                TeacherList = _context.Set<Teacher>().ToList();
+                TeacherList = _context.Set<Employee>().ToList();
             }
             catch (Exception)
             {
@@ -110,9 +110,9 @@ namespace Cooking.Repos
             else return student;
         }
 
-        public Teacher GetTeacher(string username)
+        public Employee GetTeacher(string username)
         {
-            var Teacher = _context.Teacher.FirstOrDefault(x => x.username == username);
+            var Teacher = _context.Employee.FirstOrDefault(x => x.username == username);
 
             if (Teacher == null) return null;
             else {
@@ -123,9 +123,9 @@ namespace Cooking.Repos
                 return Teacher; }
         }
 
-        public Admin signin(string email, string password)
+        public Employee signin(string email, string password)
         {
-            var admin= _context.Admin.FirstOrDefault(x => x.email == email);
+            var admin= _context.Employee.FirstOrDefault(x => x.email == email);
 
             if (admin == null) return null;
             else
@@ -139,10 +139,10 @@ namespace Cooking.Repos
             }
         }
 
-        public Admin signup(Admin admin)
+        public Employee signup(Employee admin)
         {
-            Admin u = new Admin();
-            Admin ?checkemail = _context.Admin.FirstOrDefault(x => x.email == admin.email || x.username == admin.username);
+            Employee u = new Employee();
+            Employee? checkemail = _context.Employee.FirstOrDefault(x => x.email == admin.email || x.username == admin.username);
             if (checkemail != null) return null;
             else
             {
@@ -155,7 +155,7 @@ namespace Cooking.Repos
                 else u.image = admin.image;
                 u.phone = admin.phone;
                 u.role = "Admin";
-                _context.Admin.Add(u);
+                _context.Employee.Add(u);
                 _context.SaveChanges();
                 return u;
             }

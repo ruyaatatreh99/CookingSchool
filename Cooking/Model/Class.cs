@@ -14,8 +14,6 @@ namespace Cooking.Model
         public int? StudentNo { get; set; }
         [Required(ErrorMessage = "Course Name is required")]
         public string? CourseName { get; set; }
-        [Required(ErrorMessage = "Class Time is required")]
-        public string? ClassTime{ get; set; }
         [Required]
         [ForeignKey("Course")]
         public int? CourseID { get; set; }

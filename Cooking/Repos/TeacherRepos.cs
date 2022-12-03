@@ -73,7 +73,6 @@ namespace Cooking.Repos
                 c.StudentNo = 0;
                 c.CourseID = courseID;
                 c.CourseName = coursename;
-                c.ClassTime = ClassTime;
                 c.StudentClass = new List<StudentClass>();
                 _context.Class.Add(c);
                 _context.SaveChanges();
@@ -99,9 +98,9 @@ namespace Cooking.Repos
             return Class;
         }
 
-        public Teacher signin(string email, string password)
+        public Employee signin(string email, string password)
         {
-            var Teacher = _context.Teacher.FirstOrDefault(x => x.email == email);
+            var Teacher = _context.Employee.FirstOrDefault(x => x.email == email);
 
             if (Teacher == null) return null;
             else
@@ -155,7 +154,7 @@ namespace Cooking.Repos
             List<Class> AllClassList;
             List<Class> TeacherClasstList = new List<Class>();
             AllClassList = _context.Set<Class>().ToList();
-            Teacher? getTeacher = _context.Teacher.First(x => x.TeacherID == teacherID);
+            Employee? getTeacher = _context.Employee.First(x => x.EmpID == teacherID);
             foreach (Class Class in AllClassList)
             {
                 if (Class.TeacherName == getTeacher.username) TeacherClasstList.Add(Class);

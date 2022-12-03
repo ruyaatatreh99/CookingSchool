@@ -7,7 +7,7 @@ namespace Cooking.Model
 
     {
         public DBContext(DbContextOptions options) : base(options) { }
-        public DbSet<Admin> Admin { get; set; }
+        public DbSet<Employee> Employee { get; set; }
         public DbSet<Class> Class { get; set; }
         public DbSet<Course> Course { get; set; }
         public DbSet<Favourite> Favourite { get; set; }
@@ -16,7 +16,6 @@ namespace Cooking.Model
         public DbSet<Exam> Exam { get; set; }
         public DbSet<Request> Request { get; set; }
         public DbSet<Student> Student { get; set; }
-        public DbSet<Teacher> Teacher { get; set; }
         public DbSet<StudentClass> StudentClass { get; set; }
 
         protected readonly IConfiguration Configuration;

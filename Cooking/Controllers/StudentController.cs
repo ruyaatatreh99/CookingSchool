@@ -61,9 +61,9 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/signin")]
+        [Route("user/login")]
         [HttpPost]
-        public async Task<IActionResult> signin([FromBody] Dictionary<string, string> data)
+        public IActionResult signin([FromBody] Dictionary<string, string> data)
         {
 
             try
@@ -98,9 +98,9 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("user/signup")]
+        [Route("/user")]
         [HttpPost]
-        public async Task<IActionResult> signup([FromBody] Dictionary<string, string> data)
+        public IActionResult signup([FromBody] Dictionary<string, string> data)
         {
 
 
@@ -113,18 +113,15 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/level")]
+        [Route("user/{student_id}/level")]
         [HttpGet]
-        public IActionResult pickLevel(string level, int Student_Id)
+        public IActionResult pickLevel(string level, int student_id)
         {
-
-
-            _inner.pickLevel(level,Student_Id);
-             return Ok(new { });
-
+            _inner.pickLevel(level,student_id);
+             return Ok(new {});
         }
 
-        [Route("user/register")]
+        [Route("user/class")]
         [HttpPost]
         [Authorize(Roles = "Student")]
         public IActionResult regiserClasses([FromBody] Dictionary<string, string> data)
@@ -136,7 +133,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/classes")]
+        [Route("user/class")]
         [HttpGet]
         public IActionResult ViewAllClasses()
         {
@@ -147,32 +144,32 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/Student_classes")]
+        [Route("user/{student_id}/class")]
         [HttpGet]
         [Authorize(Roles = "Student")]
-        public IActionResult viewRegiseredClasses(int Student_Id)
+        public IActionResult viewRegiseredClasses(int student_id)
         {
 
 
-            var Classes = _inner.viewRegiseredClasses(Student_Id);
-            var StudentClasstList = Classes.Where(a => a.StudentID == Student_Id);
+            var Classes = _inner.viewRegiseredClasses(student_id);
+            var StudentClasstList = Classes.Where(a => a.StudentID == student_id);
             return Ok(new { Classes = StudentClasstList });
 
         }
 
-        [Route("user/Student_Mark")]
+        [Route("user/{student_id}/mark")]
         [HttpGet]
         [Authorize(Roles = "Student")]
-        public IActionResult ShowClassMark(int Student_Id)
+        public IActionResult ShowClassMark(int student_id)
         {
 
 
-            var Mark = _inner.ShowClassMark( Student_Id);
+            var Mark = _inner.ShowClassMark(student_id);
             return Ok(new { Mark = Mark });
 
         }
 
-        [Route("/Meal/search")]
+        [Route("/meal/search")]
         [HttpGet]
         public async Task<string> SearchMealByName(string Name)
         {
@@ -185,7 +182,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/Meal/List_meals")]
+        [Route("/meal/list_meals")]
         [HttpGet]
         public async Task<string> List_meals(string Name)
         {
@@ -249,7 +246,8 @@ namespace Cooking.Controllers
             return result;
 
         }
-        [Route("/Meal/favourite")]
+        
+        [Route("user/{user_id}/Meal/favourite/{meal_id}")]
         [HttpPost]
         [Authorize(Roles = "Student")]
         public IActionResult Add_Favourite(int user_id,int meal_id)
@@ -260,7 +258,8 @@ namespace Cooking.Controllers
           else  return Ok(new {message="Added successfuly"});
 
         }
-        [Route("/Meal/favourite")]
+       
+        [Route("user/{user_id}/Meal/favourite/{meal_id}")]
         [HttpDelete]
         [Authorize(Roles = "Student")]
         public IActionResult delete_Favourite(int user_id, int meal_id)
@@ -271,7 +270,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/Meal/favourite")]
+        [Route("user/{user_id}/Meal/favourite")]
         [HttpGet]
         [Authorize(Roles = "Student")]
         public async Task<string> get_Favourite(int user_id)

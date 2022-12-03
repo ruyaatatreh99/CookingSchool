@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Cooking.Controllers
 {
@@ -21,19 +22,19 @@ namespace Cooking.Controllers
 
         }
 
-
-        [Route("/admin/signin")]
+        [Route("admin/login")]
         [HttpPost]
-        public IActionResult signin([FromBody] Dictionary<string, string> data)
+        public IActionResult login([FromBody] Dictionary<string, string> data)
         {
 
-                Admin admin = _inner.signin(data["email"], data["password"]);
+            Employee admin = _inner.signin(data["email"], data["password"]);
             if (admin == null) return NotFound(new { errors = "email or password invaild" });
             else {
                     List<Claim> claims = new List<Claim>
                 {
-                    new Claim("type","data"),
+                    new Claim(ClaimTypes.Name,data["email"]),
                      new Claim(ClaimTypes.Role,"Admin"),
+                    
                 };
                     var key= new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SXkSqsKyNUyvGbnHs7ke2NCq8zQzNLW7mPmHbnZZ"));
 
@@ -53,14 +54,14 @@ namespace Cooking.Controllers
         }
 
        
-        [Route("/admin/signup")]
+        [Route("/admin")]
         [HttpPost]
-        public IActionResult signup([FromBody] Admin  data)
+        public IActionResult Register([FromBody] Employee data)
         {
             try
             {
 
-                Admin admin = _inner.signup(data);
+                Employee admin = _inner.signup(data);
                 if (admin == null) return NotFound(new { errors = "admin already Exist" });
                 else
                 {
@@ -73,15 +74,15 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/teacher")]
+        [Route("admin/teacher")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateTeacherAccount([FromBody] Teacher teacher)
+        public IActionResult CreateTeacherAccount([FromBody] Employee teacher)
         {
             try
             {
 
-                Teacher Teacher = _inner.CreateTeacherAccount( teacher);
+                Employee Teacher = _inner.CreateTeacherAccount(teacher);
                 if (Teacher == null) return NotFound(new { errors = "Teacher already Exist" });
                 else return Ok(new { Teacher = Teacher });
             }
@@ -91,7 +92,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/course")]
+        [Route("admin/course")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult CeateCourse(string course)
@@ -99,7 +100,7 @@ namespace Cooking.Controllers
             try
             {
 
-                Course Course = _inner.CeateCourse( course);
+                Course Course = _inner.CeateCourse(course);
                 if (Course == null) return NotFound(new { errors = "Course already Exist" });
                 else return Ok(new { Course = Course });
             }
@@ -109,14 +110,15 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/teacher")]
+        [Route("admin/teacher/{username}")]
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetTeacher(string username)
         {
             try
             {
 
-                Teacher teacher = _inner.GetTeacher(username);
+                Employee teacher = _inner.GetTeacher(username);
                 if (teacher == null) return NotFound(new { errors = "teacher is nnot Exist" });
                 else return Ok(new { teacher = teacher });
             }
@@ -126,8 +128,9 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/student")]
+        [Route("admin/student/{username}")]
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetStudent(string username)
         {
             try
@@ -143,8 +146,9 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/all_teacher")]
+        [Route("/admin/teacher")]
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllTeacher()
         {
             try
@@ -159,8 +163,9 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/all_student")]
+        [Route("/admin/student")]
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllStudent()
         {
             try
@@ -175,7 +180,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/course")]
+        [Route("admin/course")]
         [HttpGet]
         public IActionResult GetAllCourse()
         {
@@ -191,7 +196,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/course")]
+        [Route("admin/course")]
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         public IActionResult deleteCourse(int courseID)
@@ -204,7 +209,7 @@ namespace Cooking.Controllers
             catch (Exception) { return new JsonResult(new { status = 500, message = "Error" }); }
         }
 
-        [Route("/admin/teacher")]
+        [Route("admin/teacher")]
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         public IActionResult deleteTeacher(int teacherID)
