@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Cooking.Model;
 using Cooking.Repos;
-using static Azure.Core.HttpHeader;
-using Microsoft.AspNetCore.Identity;
-using System.IO;
-using System.Text.Json.Nodes;
-using System.Net;
+
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cooking.Controllers
 {
@@ -25,6 +27,7 @@ namespace Cooking.Controllers
 
         [Route("user/submit_form")]
         [HttpPost]
+        [Authorize(Roles = "Student")]
         public Task <Exam> SubmitTask([FromForm] Exam Exam_File)
         {
             try
@@ -60,25 +63,53 @@ namespace Cooking.Controllers
 
         [Route("user/signin")]
         [HttpPost]
-        public IActionResult signin([FromBody] Dictionary<string, string> data)
+        public async Task<IActionResult> signin([FromBody] Dictionary<string, string> data)
         {
 
+            try
+            {
 
-            Student Student = _inner.signin(data["email"], data["password"]);
-            if (Student == null) return NotFound(new { errors = "email or password invaild" });
-            else return Ok(new { Student = Student });
+                Student Student =  _inner.signin(data["email"], data["password"]);
+                if (Student == null) return NotFound(new { errors = "email or password invaild" });
+                else {
+                    List<Claim> claims = new List<Claim>
+                {
+                    new Claim("type","data"),
+                     new Claim(ClaimTypes.Role,"Student"),
+                };
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SXkSqsKyNUyvGbnHs7ke2NCq8zQzNLW7mPmHbnZZ"));
 
+                    var Token = new JwtSecurityToken(
+            "https://fbi-demo.com",
+            "https://fbi-demo.com",
+           claims,
+            expires: DateTime.Now.AddDays(90),
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+        );
+
+                    var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
+                    return Ok(new { Student = Student, Toke = jwt });
+                }
+
+            }
+            catch (Exception)
+            {
+                return new JsonResult(new { status = 500, message = "Error" });
+            }
         }
 
         [Route("user/signup")]
         [HttpPost]
-        public IActionResult signup([FromBody] Dictionary<string, string> data)
+        public async Task<IActionResult> signup([FromBody] Dictionary<string, string> data)
         {
 
 
             Student Student = _inner.signup(data["email"], data["password"], data["phone"], data["image"], data["username"]);
             if (Student == null) return NotFound(new { errors = " Student already Exist" });
-            else return Ok(new { Student = Student });
+            else
+            {
+                return Ok(new { Student = Student });
+            }
 
         }
 
@@ -95,6 +126,7 @@ namespace Cooking.Controllers
 
         [Route("user/register")]
         [HttpPost]
+        [Authorize(Roles = "Student")]
         public IActionResult regiserClasses([FromBody] Dictionary<string, string> data)
         {
 
@@ -117,6 +149,7 @@ namespace Cooking.Controllers
 
         [Route("user/Student_classes")]
         [HttpGet]
+        [Authorize(Roles = "Student")]
         public IActionResult viewRegiseredClasses(int Student_Id)
         {
 
@@ -129,6 +162,7 @@ namespace Cooking.Controllers
 
         [Route("user/Student_Mark")]
         [HttpGet]
+        [Authorize(Roles = "Student")]
         public IActionResult ShowClassMark(int Student_Id)
         {
 
@@ -217,6 +251,7 @@ namespace Cooking.Controllers
         }
         [Route("/Meal/favourite")]
         [HttpPost]
+        [Authorize(Roles = "Student")]
         public IActionResult Add_Favourite(int user_id,int meal_id)
         {
 
@@ -227,6 +262,7 @@ namespace Cooking.Controllers
         }
         [Route("/Meal/favourite")]
         [HttpDelete]
+        [Authorize(Roles = "Student")]
         public IActionResult delete_Favourite(int user_id, int meal_id)
         {
 
@@ -237,6 +273,7 @@ namespace Cooking.Controllers
 
         [Route("/Meal/favourite")]
         [HttpGet]
+        [Authorize(Roles = "Student")]
         public async Task<string> get_Favourite(int user_id)
         {
             var item="";

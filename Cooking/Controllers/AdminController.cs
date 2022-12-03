@@ -1,14 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cooking.Model;
 using Cooking.Repos;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cooking.Controllers
 {
     [ApiController]
+
     public class AdminController : ControllerBase
     {
         private readonly IAdmin _inner;
-
 
         public AdminController(IAdmin inner)
         {
@@ -21,17 +26,30 @@ namespace Cooking.Controllers
         [HttpPost]
         public IActionResult signin([FromBody] Dictionary<string, string> data)
         {
-            try
-            {
 
                 Admin admin = _inner.signin(data["email"], data["password"]);
-                if (admin == null) return NotFound(new { errors = "email or password invaild" });
-                else return Ok(new { admin = admin });
+            if (admin == null) return NotFound(new { errors = "email or password invaild" });
+            else {
+                    List<Claim> claims = new List<Claim>
+                {
+                    new Claim("type","data"),
+                     new Claim(ClaimTypes.Role,"Admin"),
+                };
+                    var key= new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SXkSqsKyNUyvGbnHs7ke2NCq8zQzNLW7mPmHbnZZ"));
+
+                var Token = new JwtSecurityToken(
+        "https://fbi-demo.com",
+        "https://fbi-demo.com",
+       claims,
+        expires: DateTime.Now.AddDays(90),
+        signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+    );
+
+                var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
+                    return Ok(new {Admin=admin,Token=jwt });
             }
-            catch (Exception)
-            {
-                return new JsonResult(new { status = 500, message = "Error" });
-            }
+          
+       
         }
 
        
@@ -44,7 +62,10 @@ namespace Cooking.Controllers
 
                 Admin admin = _inner.signup(data);
                 if (admin == null) return NotFound(new { errors = "admin already Exist" });
-                else return Ok(new { admin = admin });
+                else
+                {
+                    return Ok(new { Admin = admin });
+                }
             }
             catch (Exception)
             {
@@ -52,9 +73,9 @@ namespace Cooking.Controllers
             }
         }
 
-    
         [Route("/admin/teacher")]
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateTeacherAccount([FromBody] Teacher teacher)
         {
             try
@@ -72,6 +93,7 @@ namespace Cooking.Controllers
 
         [Route("/admin/course")]
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CeateCourse(string course)
         {
             try
@@ -171,6 +193,7 @@ namespace Cooking.Controllers
 
         [Route("/admin/course")]
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public IActionResult deleteCourse(int courseID)
         {
             try
@@ -183,6 +206,7 @@ namespace Cooking.Controllers
 
         [Route("/admin/teacher")]
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public IActionResult deleteTeacher(int teacherID)
         {
             try

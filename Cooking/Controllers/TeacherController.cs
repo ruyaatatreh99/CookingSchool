@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cooking.Model;
 using Cooking.Repos;
-
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cooking.Controllers
 {
@@ -20,16 +24,42 @@ namespace Cooking.Controllers
         [HttpPost]
         public IActionResult signin([FromBody] Dictionary<string, string> data)
         {
-           
+            try
+            {
+
 
                 Teacher Teacher = _teacher.signin(data["email"], data["password"]);
                 if (Teacher == null) return NotFound(new { errors = "email or password invaild" });
-                else return Ok(new { Teacher = Teacher });
-           
+                else
+                {
+                    List<Claim> claims = new List<Claim>
+                {
+                    new Claim("type","data"),
+                     new Claim(ClaimTypes.Role,"Teacher"),
+                };
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SXkSqsKyNUyvGbnHs7ke2NCq8zQzNLW7mPmHbnZZ"));
+
+                    var Token = new JwtSecurityToken(
+            "https://fbi-demo.com",
+            "https://fbi-demo.com",
+           claims,
+            expires: DateTime.Now.AddDays(90),
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+        );
+
+                    var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
+                    return Ok(new { Teacher = Teacher,Toke= jwt });
+                }
+        }
+            catch (Exception)
+            {
+                return new JsonResult(new { status = 500, message = "Error" });
+            }
         }
 
         [Route("/teacher/class")]
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public IActionResult CreateClass([FromBody] Dictionary<string, string> data, int course_ID )
         {
 
@@ -52,6 +82,7 @@ namespace Cooking.Controllers
 
         [Route("/request")]
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public IActionResult AcceptStudent([FromBody] Dictionary<string, string> data, int class_Id)
         {
             
@@ -63,6 +94,7 @@ namespace Cooking.Controllers
 
         [Route("/mark")]
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public IActionResult AddMark([FromBody] Dictionary<string, string> data, int class_Id, string status)
         {
             
@@ -74,6 +106,7 @@ namespace Cooking.Controllers
 
         [Route("/mark")]
         [HttpPut]
+        [Authorize(Roles = "Teacher")]
         public IActionResult updateMark([FromBody] Dictionary<string, string> data, int class_Id, string status)
         {
             
@@ -113,6 +146,7 @@ namespace Cooking.Controllers
         }
         [Route("/teacher/class/student")]
         [HttpDelete]
+        [Authorize(Roles = "Teacher")]
         public IActionResult DeleteStudent(int Class_ID,int  student_ID )
         {
 
