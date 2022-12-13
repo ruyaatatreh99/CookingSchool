@@ -52,9 +52,8 @@ namespace Cooking.Controllers
           
        
         }
-
-       
-        [Route("/admin")]
+  
+        [Route("admin/")]
         [HttpPost]
         public IActionResult Register([FromBody] Employee data)
         {
@@ -74,7 +73,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("admin/teacher")]
+        [Route("teacher/")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateTeacherAccount([FromBody] Employee teacher)
@@ -92,7 +91,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("admin/course")]
+        [Route("course/")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult CeateCourse(string course)
@@ -110,7 +109,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("admin/teacher/{username}")]
+        [Route("teacher/{username}")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetTeacher(string username)
@@ -128,7 +127,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("admin/student/{username}")]
+        [Route("students/{username}")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetStudent(string username)
@@ -146,7 +145,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/teacher")]
+        [Route("teacher/")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAllTeacher()
@@ -163,7 +162,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/admin/student")]
+        [Route("students/")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAllStudent()
@@ -180,25 +179,9 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("admin/course")]
-        [HttpGet]
-        public IActionResult GetAllCourse()
-        {
-            try
-            {
-
-                var course = _inner.GetAllCourse();
-                return Ok(new { courses = course, coursesCount = course.Count() });
-            }
-            catch (Exception)
-            {
-                return new JsonResult(new { status = 500, message = "Error" });
-            }
-        }
-
-        [Route("admin/course")]
+        [Route("course/")]
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
+       [Authorize(Roles = "Admin")]
         public IActionResult deleteCourse(int courseID)
         {
             try
@@ -209,7 +192,7 @@ namespace Cooking.Controllers
             catch (Exception) { return new JsonResult(new { status = 500, message = "Error" }); }
         }
 
-        [Route("admin/teacher")]
+        [Route("teacher/")]
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         public IActionResult deleteTeacher(int teacherID)

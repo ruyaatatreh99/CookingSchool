@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using System.Text;
 using Cooking.Model;
 
@@ -39,7 +40,11 @@ namespace Cooking.Repos
             List<Favourite> FavouriteList;
             try
             {
+               
+
                 FavouriteList = _context.Set<Favourite>().ToList();
+                FavouriteList.GroupBy(x => x.mealid);
+
             }
             catch (Exception)
             {
@@ -51,7 +56,7 @@ namespace Cooking.Repos
         public void pickLevel(string level, int StudentId)
         {
             var student = _context.Student.First(x => x.StudentID == StudentId);
-            student.role = level;
+            student.level = level;
             _context.Student.Update(student);
             _context.SaveChanges();
         }

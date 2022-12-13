@@ -41,12 +41,12 @@ namespace Cooking.Repos
 
         }
 
-        public Mark AddMark(double markvalue, string studentname, int classid,string status)
+        public Mark AddMark(double markvalue, int studentid, int classid,string status)
         {
             Mark mark = new Mark();
-            Student? getstudent = _context.Student.First(x => x.username == studentname);
+            Student? getstudent = _context.Student.First(x => x.StudentID == studentid);
             Mark? check = _context.Mark.FirstOrDefault(x => x.StudentID == getstudent.StudentID || x.ClassID == classid);
-            if (check != null) return null;
+            if (check != null || getstudent==null) return null;
             else
             {
                 mark.ClassID = classid;
@@ -62,7 +62,7 @@ namespace Cooking.Repos
             }
         }
 
-        public Class CreateClass(string teachername, int courseID, string coursename,string ClassTime)
+        public Class CreateClass(string teachername, int courseID, string coursename)
         {
             Class c = new Class();
             Class? check = _context.Class.FirstOrDefault(x => x.CourseID == courseID || x.TeacherName == teachername);
@@ -114,9 +114,9 @@ namespace Cooking.Repos
             }
         }
 
-        public Mark updateMark(double markvalue, string studentname, int classid, string status)
+        public Mark updateMark(double markvalue, int studentid, int classid, string status)
         {
-            Student? getstudent = _context.Student.First(x => x.username == studentname);
+            Student? getstudent = _context.Student.First(x => x.StudentID ==  studentid);
             Mark? mark = _context.Mark.First(x => x.StudentID == getstudent.StudentID && x.ClassID == classid);
             getstudent.MarkList.Remove(mark);
             mark.Markvalue = markvalue;

@@ -25,7 +25,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/submit_form")]
+        [Route("students/{student_id}/assignment")]
         [HttpPost]
         [Authorize(Roles = "Student")]
         public Task <Exam> SubmitTask([FromForm] Exam Exam_File)
@@ -61,7 +61,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/login")]
+        [Route("students/login")]
         [HttpPost]
         public IActionResult signin([FromBody] Dictionary<string, string> data)
         {
@@ -88,7 +88,7 @@ namespace Cooking.Controllers
         );
 
                     var jwt = new JwtSecurityTokenHandler().WriteToken(Token);
-                    return Ok(new { Student = Student, Toke = jwt });
+                    return Ok(new { Student = Student, Token = jwt });
                 }
 
             }
@@ -98,7 +98,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("/user")]
+        [Route("students/")]
         [HttpPost]
         public IActionResult signup([FromBody] Dictionary<string, string> data)
         {
@@ -113,15 +113,15 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/{student_id}/level")]
-        [HttpGet]
+        [Route("students/{student_id}")]
+        [HttpPut]
         public IActionResult pickLevel(string level, int student_id)
         {
             _inner.pickLevel(level,student_id);
              return Ok(new {});
         }
 
-        [Route("user/class")]
+        [Route("request/")]
         [HttpPost]
         [Authorize(Roles = "Student")]
         public IActionResult regiserClasses([FromBody] Dictionary<string, string> data)
@@ -133,7 +133,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/class")]
+        [Route("classes/")]
         [HttpGet]
         public IActionResult ViewAllClasses()
         {
@@ -144,7 +144,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/{student_id}/class")]
+        [Route("students/{student_id}/classes")]
         [HttpGet]
         [Authorize(Roles = "Student")]
         public IActionResult viewRegiseredClasses(int student_id)
@@ -157,7 +157,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/{student_id}/mark")]
+        [Route("students/{student_id}/mark")]
         [HttpGet]
         [Authorize(Roles = "Student")]
         public IActionResult ShowClassMark(int student_id)
@@ -169,11 +169,11 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/meal/search")]
+        [Route("meal/{name}")]
         [HttpGet]
-        public async Task<string> SearchMealByName(string Name)
+        public async Task<string> SearchMealByName(string name)
         {
-            string path = "http://www.themealdb.com/api/json/v1/1/search.php?s="+ Name;
+            string path = "http://www.themealdb.com/api/json/v1/1/search.php?s="+ name;
             var client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(path);
             response.EnsureSuccessStatusCode();
@@ -182,7 +182,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/meal/list_meals")]
+        [Route("meal/")]
         [HttpGet]
         public async Task<string> List_meals(string Name)
         {
@@ -195,7 +195,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/Meal/Category")]
+        [Route("meal/category")]
         [HttpGet]
         public async Task<string> List_Category()
         {
@@ -208,7 +208,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/Meal/Category/{name}")]
+        [Route("meal/category/{name}")]
         [HttpGet]
         public async Task<string> List_Category(string name)
         {
@@ -221,7 +221,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/Meal/Area/{name}")]
+        [Route("meal/area/{name}")]
         [HttpGet]
         public async Task<string> List_Area(string name)
         {
@@ -234,7 +234,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("/Meal/Ingredients")]
+        [Route("meal/ingredients")]
         [HttpGet]
         public async Task<string> List_Ingredients()
         {
@@ -247,7 +247,7 @@ namespace Cooking.Controllers
 
         }
         
-        [Route("user/{user_id}/Meal/favourite/{meal_id}")]
+        [Route("meal/{user_id}/favourite/{meal_id}")]
         [HttpPost]
         [Authorize(Roles = "Student")]
         public IActionResult Add_Favourite(int user_id,int meal_id)
@@ -259,7 +259,7 @@ namespace Cooking.Controllers
 
         }
        
-        [Route("user/{user_id}/Meal/favourite/{meal_id}")]
+        [Route("meal/{user_id}/favourite/{meal_id}")]
         [HttpDelete]
         [Authorize(Roles = "Student")]
         public IActionResult delete_Favourite(int user_id, int meal_id)
@@ -270,9 +270,9 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("user/{user_id}/Meal/favourite")]
+        [Route("meal/{user_id}/favourite")]
         [HttpGet]
-        [Authorize(Roles = "Student")]
+       // [Authorize(Roles = "Student")]
         public async Task<string> get_Favourite(int user_id)
         {
             var item="";
