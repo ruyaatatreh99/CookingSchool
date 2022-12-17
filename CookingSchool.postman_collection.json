@@ -1,0 +1,1651 @@
+{
+	"info": {
+		"_postman_id": "f87a1f29-23c9-49de-808b-03ad998c185a",
+		"name": "CookingSchool",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12963323"
+	},
+	"item": [
+		{
+			"name": "Teacher",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"user\" property'] = responseJSON.hasOwnProperty('Teacher');\r",
+									"tests['User has \"token\" property'] = responseJSON.hasOwnProperty('token');\r",
+									"var Teacher = responseJSON.Teacher || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = Teacher.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = Teacher.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = Teacher.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = Teacher.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/teacher/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"teacher",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "class",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"class\" property'] = responseJSON.hasOwnProperty('class');\r",
+									"var classs = responseJSON.class || {};\r",
+									"\r",
+									"tests['User has \"teacherName\" property'] = classs.hasOwnProperty('teacherName');\r",
+									"tests['User has \"studentNo\" property'] = classs.hasOwnProperty('studentNo');\r",
+									"tests['User has \"courseName\" property'] = classs.hasOwnProperty('courseName');\r",
+									"tests['User has \"courseID\" property'] = classs.hasOwnProperty('courseID');\r",
+									"\r",
+									"}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teacher_name\":\"teacher_ali\",\r\n    \"course_name\":\"area\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7259/classes?course_ID=2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"classes"
+							],
+							"query": [
+								{
+									"key": "course_ID",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"request\" property'] = responseJSON.hasOwnProperty('request');\r",
+									"    if(responseJSON.request.length){\r",
+									"        var  req = responseJSON.request[0];\r",
+									"\r",
+									"      tests['User has \"StudentID\" property'] = req.hasOwnProperty('studentID');\r",
+									"      tests['User has \"StudentNaame\" property'] = req.hasOwnProperty('studentNaame');\r",
+									"tests['User has \"ClassId\" property'] = req.hasOwnProperty('classId');\r",
+									"   \r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/request/?Teacher_ID=3",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"request",
+								""
+							],
+							"query": [
+								{
+									"key": "Teacher_ID",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accpet reequest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"student_Id\":\"1\",\r\n    \"teacher_ID\":\"3\",\r\n    \" class_Id\":\"1\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7259/teacher/request",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"teacher",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add  mark",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mark_value\":\"50.0\",\r\n    \"student_id\":\"1\",\r\n\"class_id\":\"2\",\r\n\"status\":\"pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7259/mark/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"mark",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewAllTeacherClass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"classes\" property'] = responseJSON.hasOwnProperty('classes');\r",
+									"    if(responseJSON.classes.length){\r",
+									"        var  classes = responseJSON.classes[0];\r",
+									"\r",
+									"      tests['User has \"TeacherName\" property'] = classes.hasOwnProperty('teacherName');\r",
+									"      tests['User has \"StudentNo\" property'] = classes.hasOwnProperty('studentNo');\r",
+									"tests['User has \"CourseName\" property'] = classes.hasOwnProperty('courseName');\r",
+									"   \r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/classes/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"classes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "class",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"class\" property'] = responseJSON.hasOwnProperty('class');\r",
+									"\r",
+									"var classs = responseJSON.class || {};\r",
+									"\r",
+									"tests['class has \"teacherName\" property'] = classs.hasOwnProperty('teacherName');\r",
+									"tests['class has \"studentNo\" property'] = classs.hasOwnProperty('studentNo');\r",
+									"tests['class has \"courseName\" property'] = classs.hasOwnProperty('courseName');\r",
+									"tests['class has \"courseID\" property'] = classs.hasOwnProperty('courseID');\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/classes/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"classes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/classes/1/student?Class_ID=1&student_ID=1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"classes",
+								"1",
+								"student"
+							],
+							"query": [
+								{
+									"key": "Class_ID",
+									"value": "1"
+								},
+								{
+									"key": "student_ID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "GetAllStudent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcmFkbWluQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2Nzc5MjMxOTgsImlzcyI6Imh0dHBzOi8vZmJpLWRlbW8uY29tIiwiYXVkIjoiaHR0cHM6Ly9mYmktZGVtby5jb20ifQ.n--pnWZf-Cloak76rIzfBKTUuID1A-CDpXt_CFRYSnY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5259/admin/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"admin",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"user\" property'] = responseJSON.hasOwnProperty('admin');\r",
+									"tests['User has \"token\" property'] = responseJSON.hasOwnProperty('token');\r",
+									"var admin = responseJSON.admin || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = admin.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = admin.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = admin.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = admin.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlcmFkbWluQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2Nzc4NTIxNjIsImlzcyI6Imh0dHBzOi8vZmJpLWRlbW8uY29tIiwiYXVkIjoiaHR0cHM6Ly9mYmktZGVtby5jb20ifQ.jVo_kNyYNfLGTMQMShZWvbpOYUxvkTFfAYArOLOHa5w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"useradmin@example.com\",\r\n  \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5259/admin/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateTeacherAccount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"teacher\" property'] = responseJSON.hasOwnProperty('teacher');\r",
+									"var Teacher = responseJSON.teacher || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = Teacher.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = Teacher.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = Teacher.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = Teacher.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"empID\": 0,\r\n  \"password\": \"stringstr\",\r\n  \"email\": \"user2@example.com\",\r\n  \"username\": \"user2\",\r\n  \"phone\": \"string\",\r\n  \"role\": \"string\",\r\n  \"image\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5259/admin/teacher",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"admin",
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"course\" property'] = responseJSON.hasOwnProperty('course');\r",
+									"var course = responseJSON.course || {};\r",
+									"\r",
+									"tests['couser has \"course name\" property'] = course.hasOwnProperty('courseName');\r",
+									"\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5259/admin/course?course=area",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"admin",
+								"course"
+							],
+							"query": [
+								{
+									"key": "course",
+									"value": "area"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sudent  by username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"teacher\" property'] = responseJSON.hasOwnProperty('student');\r",
+									"var student = responseJSON.student || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = student.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = student.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = student.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = student.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5259/students/userg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"students",
+								"userg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "teacher by username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"teacher\" property'] = responseJSON.hasOwnProperty('teacher');\r",
+									"var Teacher = responseJSON.teacher || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = Teacher.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = Teacher.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = Teacher.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = Teacher.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/teacher/user2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"teacher",
+								"user2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"students\" property'] = responseJSON.hasOwnProperty('students');\r",
+									"    tests['Response contains \"studentsCount\" property'] = responseJSON.hasOwnProperty('studentsCount');\r",
+									"    tests['studentsCount is an integer'] = Number.isInteger(responseJSON.studentsCount);\r",
+									"\r",
+									"    if(responseJSON.students.length){\r",
+									"        var  student = responseJSON.students[0];\r",
+									"\r",
+									"      tests['User has \"email\" property'] = student.hasOwnProperty('email');\r",
+									"      tests['User has \"username\" property'] = student.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = student.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = student.hasOwnProperty('image');\r",
+									"   \r",
+									"    } else {\r",
+									"        tests['studentsCount is 0 when feed is empty'] = responseJSON.studentsCount === 0;\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259students",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259students"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All teacher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"teachers\" property'] = responseJSON.hasOwnProperty('teachers');\r",
+									"    tests['Response contains \"teachersCount\" property'] = responseJSON.hasOwnProperty('teachersCount');\r",
+									"    tests['teachersCount is an integer'] = Number.isInteger(responseJSON.teachersCount);\r",
+									"\r",
+									"    if(responseJSON.teachers.length){\r",
+									"        var  Teacher = responseJSON.teachers[0];\r",
+									"\r",
+									"      tests['User has \"email\" property'] = Teacher.hasOwnProperty('email');\r",
+									"      tests['User has \"username\" property'] = Teacher.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = Teacher.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = Teacher.hasOwnProperty('image');\r",
+									"   \r",
+									"    } else {\r",
+									"        tests['teachersCount is 0 when feed is empty'] = responseJSON.teachersCount === 0;\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/teacher",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"courses\" property'] = responseJSON.hasOwnProperty('courses');\r",
+									"    tests['Response contains \"coursesCount\" property'] = responseJSON.hasOwnProperty('coursesCount');\r",
+									"    tests['coursesCount is an integer'] = Number.isInteger(responseJSON.coursesCount);\r",
+									"\r",
+									"    if(responseJSON.courses.length){\r",
+									"        var  courses = responseJSON.courses[0];\r",
+									"\r",
+									"      tests['User has \"courseName\" property'] = courses.hasOwnProperty('courseName');\r",
+									"   \r",
+									"    } else {\r",
+									"        tests['coursesCount is 0 when feed is empty'] = responseJSON.coursesCount === 0;\r",
+									"    }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/course/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"course",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/course?courseID=2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"course"
+							],
+							"query": [
+								{
+									"key": "courseID",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "teacher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/teacher?teacherID=2",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"teacher"
+							],
+							"query": [
+								{
+									"key": "teacherID",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"user\" property'] = responseJSON.hasOwnProperty('Student');\r",
+									"tests['User has \"token\" property'] = responseJSON.hasOwnProperty('token');\r",
+									"var Student = responseJSON.Student || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = Student.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = Student.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = Student.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = Student.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7259/students/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"students",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (!(environment.isIntegrationTest)) {\r",
+									"var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"tests['Response contains \"user\" property'] = responseJSON.hasOwnProperty('Student');\r",
+									"var Student = responseJSON.Student || {};\r",
+									"\r",
+									"tests['User has \"email\" property'] = Student.hasOwnProperty('email');\r",
+									"tests['User has \"username\" property'] = Student.hasOwnProperty('username');\r",
+									"tests['User has \"phone\" property'] = Student.hasOwnProperty('phone');\r",
+									"tests['User has \"image\" property'] = Student.hasOwnProperty('image');\r",
+									"\r",
+									"}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"atatrer@gmail.com\", \r\n    \"password\":\"123456789\",\r\n     \"phone\":\"0566554433\",\r\n    \"image\":\"\",\r\n     \"username\":\"ali atatreh\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5259/students/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"students",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "regiser Classes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"message matches \", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"class_ID\":\"1\",\r\n    \"Student_Id\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5259/request/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5259",
+							"path": [
+								"request",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "level",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/students/1?level=easy",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"students",
+								"1"
+							],
+							"query": [
+								{
+									"key": "level",
+									"value": "easy"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ViewAllClasses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"classes\" property'] = responseJSON.hasOwnProperty('classes');\r",
+									"    if(responseJSON.classes.length){\r",
+									"        var  classes = responseJSON.classes[0];\r",
+									"\r",
+									"      tests['User has \"TeacherName\" property'] = classes.hasOwnProperty('teacherName');\r",
+									"      tests['User has \"StudentNo\" property'] = classes.hasOwnProperty('studentNo');\r",
+									"tests['User has \"CourseName\" property'] = classes.hasOwnProperty('courseName');\r",
+									"   \r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/classes/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"classes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view Regisered Classes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"classes\" property'] = responseJSON.hasOwnProperty('classes');\r",
+									"    if(responseJSON.classes.length){\r",
+									"        var  classes = responseJSON.classes[0];\r",
+									"\r",
+									"      tests['User has \"studentID\" property'] = classes.hasOwnProperty('studentID');\r",
+									"      tests['User has \"classId\" property'] = classes.hasOwnProperty('classId');\r",
+									"   \r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/students/1/classes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"students",
+								"1",
+								"classes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Class  Mark",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/students/1/mark",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"students",
+								"1",
+								"mark"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search meal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"meals\" property'] = responseJSON.hasOwnProperty('meals');\r",
+									"    if(responseJSON.meals.length){\r",
+									"        var  meals = responseJSON.meals[0];\r",
+									"\r",
+									"      tests['User has \"strMeal\" property'] = meals.hasOwnProperty('strMeal');\r",
+									"      tests['User has \"strCategory\" property'] = meals.hasOwnProperty('strCategory');\r",
+									"      tests['User has \"strArea\" property'] = meals.hasOwnProperty('strArea');\r",
+									"      tests['User has \"strInstructions\" property'] = meals.hasOwnProperty('strInstructions');\r",
+									"      tests['User has \"strMealThumb\" property'] = meals.hasOwnProperty('strMealThumb');\r",
+									"      tests['User has \"strTags\" property'] = meals.hasOwnProperty('strTags');\r",
+									"        tests['User has \"strYoutube\" property'] = meals.hasOwnProperty('strYoutube');\r",
+									"      tests['User has \"strSource\" property'] = meals.hasOwnProperty('strSource');\r",
+									"       tests['User has \"strImageSource\" property'] = meals.hasOwnProperty('strImageSource');\r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal?name=pasta",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "pasta"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search  bby letter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"meals\" property'] = responseJSON.hasOwnProperty('meals');\r",
+									"    if(responseJSON.meals.length){\r",
+									"        var  meals = responseJSON.meals[0];\r",
+									"\r",
+									"      tests['User has \"strMeal\" property'] = meals.hasOwnProperty('strMeal');\r",
+									"      tests['User has \"strCategory\" property'] = meals.hasOwnProperty('strCategory');\r",
+									"      tests['User has \"strArea\" property'] = meals.hasOwnProperty('strArea');\r",
+									"      tests['User has \"strInstructions\" property'] = meals.hasOwnProperty('strInstructions');\r",
+									"      tests['User has \"strMealThumb\" property'] = meals.hasOwnProperty('strMealThumb');\r",
+									"      tests['User has \"strTags\" property'] = meals.hasOwnProperty('strTags');\r",
+									"        tests['User has \"strYoutube\" property'] = meals.hasOwnProperty('strYoutube');\r",
+									"      tests['User has \"strSource\" property'] = meals.hasOwnProperty('strSource');\r",
+									"       tests['User has \"strImageSource\" property'] = meals.hasOwnProperty('strImageSource');\r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal?name=b",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"meals\" property'] = responseJSON.hasOwnProperty('meals');\r",
+									"    if(responseJSON.meals.length){\r",
+									"        var  meals = responseJSON.meals[0];\r",
+									"\r",
+									"      tests['User has \"strMeal\" property'] = meals.hasOwnProperty('strMeal');\r",
+									"      tests['User has \"strMealThumb\" property'] = meals.hasOwnProperty('strMealThumb');\r",
+									"      tests['User has \"idMeal\" property'] = meals.hasOwnProperty('idMeal');\r",
+									"    \r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal/Category/Beef",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal",
+								"Category",
+								"Beef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"categories\" property'] = responseJSON.hasOwnProperty('categories');\r",
+									"    if(responseJSON.categories.length){\r",
+									"        var  categories = responseJSON.categories[0];\r",
+									"\r",
+									"      tests['User has \"strCategoryThumb\" property'] = categories.hasOwnProperty('strCategoryThumb');\r",
+									"      tests['User has \"strCategory\" property'] = categories.hasOwnProperty('strCategory');\r",
+									"      tests['User has \"strCategoryDescription\" property'] = categories.hasOwnProperty('strCategoryDescription');\r",
+									"     \r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal/category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Area",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"meals\" property'] = responseJSON.hasOwnProperty('meals');\r",
+									"    if(responseJSON.meals.length){\r",
+									"        var  meals = responseJSON.meals[0];\r",
+									"\r",
+									"      tests['User has \"strMeal\" property'] = meals.hasOwnProperty('strMeal');\r",
+									"      tests['User has \"strCategory\" property'] = meals.hasOwnProperty('strCategory');\r",
+									"      tests['User has \"strArea\" property'] = meals.hasOwnProperty('strArea');\r",
+									"      tests['User has \"strInstructions\" property'] = meals.hasOwnProperty('strInstructions');\r",
+									"      tests['User has \"strMealThumb\" property'] = meals.hasOwnProperty('strMealThumb');\r",
+									"      tests['User has \"strTags\" property'] = meals.hasOwnProperty('strTags');\r",
+									"        tests['User has \"strYoutube\" property'] = meals.hasOwnProperty('strYoutube');\r",
+									"      tests['User has \"strSource\" property'] = meals.hasOwnProperty('strSource');\r",
+									"       tests['User has \"strImageSource\" property'] = meals.hasOwnProperty('strImageSource');\r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal/area/italy",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal",
+								"area",
+								"italy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal/1/favourite/52772",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal",
+								"1",
+								"favourite",
+								"52772"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var is200Response = responseCode.code === 200;\r",
+									"\r",
+									"tests['Response code is 200 OK'] = is200Response;\r",
+									"\r",
+									"if(is200Response){\r",
+									"    var responseJSON = JSON.parse(responseBody);\r",
+									"\r",
+									"    tests['Response contains \"meals\" property'] = responseJSON.hasOwnProperty('meals');\r",
+									"    if(responseJSON.meals.length){\r",
+									"        var  meals = responseJSON.meals[0];\r",
+									"\r",
+									"      tests['User has \"strMeal\" property'] = meals.hasOwnProperty('strMeal');\r",
+									"      tests['User has \"strCategory\" property'] = meals.hasOwnProperty('strCategory');\r",
+									"      tests['User has \"strArea\" property'] = meals.hasOwnProperty('strArea');\r",
+									"      tests['User has \"strInstructions\" property'] = meals.hasOwnProperty('strInstructions');\r",
+									"      tests['User has \"strMealThumb\" property'] = meals.hasOwnProperty('strMealThumb');\r",
+									"      tests['User has \"strTags\" property'] = meals.hasOwnProperty('strTags');\r",
+									"        tests['User has \"strYoutube\" property'] = meals.hasOwnProperty('strYoutube');\r",
+									"      tests['User has \"strSource\" property'] = meals.hasOwnProperty('strSource');\r",
+									"       tests['User has \"strImageSource\" property'] = meals.hasOwnProperty('strImageSource');\r",
+									"    } \r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal/1/favourite",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal",
+								"1",
+								"favourite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"message matches \", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"message\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7259/meal/1/favourite/52772",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7259",
+							"path": [
+								"meal",
+								"1",
+								"favourite",
+								"52772"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
