@@ -4,8 +4,7 @@ using System.Timers;
 using Cooking.Controllers;
 using Cooking.Model;
 using System.Text;
-using System.Net;
-using System.Collections.Specialized;
+
 
 namespace Cooking.Repos
 {
@@ -16,9 +15,9 @@ namespace Cooking.Repos
         {
             _context = context;
         }
-        public void AcceptStudent(int studentId, int classId, int teacherID)
+        public void AcceptStudent(int requests_id,int studentId, int classId, int teacherID)
         {
-            Request? getrequest = _context.Request.FirstOrDefault(x => x.StudentID == studentId && x.ClassId == classId && x.TeacherID == teacherID);
+            Request? getrequest = _context.Request.FirstOrDefault(x => x.RequestID==requests_id);
             Student? Student = _context.Student.FirstOrDefault(x => x.StudentID == studentId);
             Class? Class = _context.Class.FirstOrDefault(x => x.ClassId == classId);
             if (getrequest != null)
@@ -39,6 +38,14 @@ namespace Cooking.Repos
 
             }
 
+        }
+
+       public void rejectStudent(int requests_id)
+        {
+            Request? getrequest = _context.Request.First(x => x.RequestID== requests_id);
+            _context.Request.Remove(getrequest);
+            _context.SaveChanges();
+         
         }
 
         public Mark AddMark(double markvalue, int studentid, int classid,string status)
@@ -162,23 +169,8 @@ namespace Cooking.Repos
             return TeacherClasstList;
         }
 
-        /*     public List<string> viewMeal()
-             {
-                 string url = @"https://";
+      
 
-                 WebRequest request = WebRequest.Create(url);
-
-                 WebResponse response = request.GetResponse();
-
-                 Stream data = response.GetResponseStream();
-
-                 StreamReader reader = new StreamReader(data);
-
-                 // json-formatted string from maps api
-                 string responseFromServer = reader.ReadToEnd();
-
-                 response.Close();
-
-             }*/
+       
     }
 }

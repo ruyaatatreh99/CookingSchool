@@ -20,7 +20,7 @@ namespace Cooking.Controllers
                 _teacher = teacher1;
             }
 
-        [Route("teacher/login")]
+        [Route("login/")]
         [HttpPost]
         public IActionResult login([FromBody] Dictionary<string, string> data)
         {
@@ -69,7 +69,7 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("request/")]
+        [Route("requests/")]
         [HttpGet]
         public IActionResult ViewAllRequest(int Teacher_ID)
         {
@@ -80,42 +80,54 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("teacher/request")]
+        [Route("requests/{requests_id}/approve")]
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public IActionResult AcceptStudent([FromBody] Dictionary<string, string> data)
+        public IActionResult AcceptStudent(int requests_id,[FromBody] Dictionary<string, string> data)
         {
             
 
-                _teacher.AcceptStudent(Int16.Parse(data["student_Id"]), Int16.Parse(data[" class_Id"]), Int16.Parse(data["teacher_ID"]));
+                _teacher.AcceptStudent(requests_id,Int16.Parse(data["student_Id"]), Int16.Parse(data[" class_Id"]), Int16.Parse(data["teacher_ID"]));
                 return Ok(new {});
            
         }
-
-        [Route("mark/{student_id}")]
+        
+        [Route("requests/{requests_id}/reject")]
         [HttpPost]
         [Authorize(Roles = "Teacher")]
-        public IActionResult AddMark([FromBody] Dictionary<string, string> data)
+        public IActionResult rejectStudent(int requests_id)
+        {
+
+
+            _teacher.rejectStudent(requests_id);
+            return Ok(new { });
+
+        }
+
+        [Route("students/{student_id}/classes/{class_id}/marks")]
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public IActionResult AddMark(int student_id, int class_id,[FromBody] Dictionary<string, string> data)
         {
             
-               Mark mark= _teacher.AddMark(Double.Parse(data["mark_value"]), Int16.Parse(data["student_id"]) , Int16.Parse(data["class_id"]), data["status"] );
+               Mark mark= _teacher.AddMark(Double.Parse(data["mark_value"]),student_id ,class_id, data["status"] );
                 if (mark == null) return NotFound(new { errors = "Already Added" });
                 else return Ok(new { mark = mark });
            
         }
 
-        [Route("mark/{student_id}")]
+        [Route("students/{student_id}/classes/{class_id}/marks")]
         [HttpPut]
         [Authorize(Roles = "Teacher")]
-        public IActionResult updateMark([FromBody] Dictionary<string, string> data)
+        public IActionResult updateMark(int student_id, int class_id,[FromBody] Dictionary<string, string> data)
         {
             
-                Mark mark = _teacher.updateMark(Double.Parse(data["mark_value"]), Int16.Parse(data["student_id"]), Int16.Parse(data["class_id"]), data["status"]);
+                Mark mark = _teacher.updateMark(Double.Parse(data["mark_value"]),student_id,class_id, data["status"]);
                 return Ok(new { mark = mark });
            
         }
 
-        [Route("course/")]
+        [Route("courses/")]
         [HttpGet]
         public IActionResult viewAllCourse()
         {
@@ -125,7 +137,7 @@ namespace Cooking.Controllers
             
         }
 
-        [Route("classes/{teacher_id}")]
+        [Route("teachers/{teacher_id}/classes")]
         [HttpGet]
         public IActionResult viewAllTeacherClass(int teacher_id)
         {
@@ -146,7 +158,7 @@ namespace Cooking.Controllers
 
         }
        
-        [Route("classes/{Class_ID}/student")]
+        [Route("classes/{Class_ID}/students/{student_ID}")]
         [HttpDelete]
         [Authorize(Roles = "Teacher")]
         public IActionResult DeleteStudent(int Class_ID,int  student_ID )
