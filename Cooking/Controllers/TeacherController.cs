@@ -20,7 +20,7 @@ namespace Cooking.Controllers
                 _teacher = teacher1;
             }
 
-        [Route("login/")]
+        [Route("login")]
         [HttpPost]
         public IActionResult login([FromBody] Dictionary<string, string> data)
         {
@@ -57,7 +57,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("classes/")]
+        [Route("classes")]
         [HttpPost]
         [Authorize(Roles = "Teacher")]
         public IActionResult CreateClass([FromBody] Dictionary<string, string> data, int course_ID )
@@ -69,7 +69,7 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("requests/")]
+        [Route("requests")]
         [HttpGet]
         public IActionResult ViewAllRequest(int Teacher_ID)
         {
@@ -127,7 +127,7 @@ namespace Cooking.Controllers
            
         }
 
-        [Route("courses/")]
+        [Route("courses")]
         [HttpGet]
         public IActionResult viewAllCourse()
         {
@@ -161,7 +161,7 @@ namespace Cooking.Controllers
         [Route("classes/{Class_ID}/students/{student_ID}")]
         [HttpDelete]
         [Authorize(Roles = "Teacher")]
-        public IActionResult DeleteStudent(int Class_ID,int  student_ID )
+        public IActionResult DeleteStudent(int Class_ID, int student_ID)
         {
 
              _teacher.DeleteStudent(Class_ID, student_ID);

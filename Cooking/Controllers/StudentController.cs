@@ -26,7 +26,7 @@ namespace Cooking.Controllers
         [Route("students/{student_id}/assignments")]
         [HttpPost]
         [Authorize(Roles = "Student")]
-        public Task <Exam> SubmitTask([FromForm] Exam Exam_File)
+        public Task <Exam> SubmitTask([FromForm] Exam Exam_File,int student_id)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Cooking.Controllers
             }
         }
 
-        [Route("students/")]
+        [Route("students")]
         [HttpPost]
         public IActionResult signup([FromBody] Dictionary<string, string> data)
         {
@@ -119,7 +119,7 @@ namespace Cooking.Controllers
              return Ok(new {});
         }
 
-        [Route("requests/")]
+        [Route("requests")]
         [HttpPost]
         [Authorize(Roles = "Student")]
         public IActionResult regiserClasses([FromBody] Dictionary<string, string> data)
@@ -131,7 +131,7 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("classes/")]
+        [Route("classes")]
         [HttpGet]
         public IActionResult ViewAllClasses()
         {
@@ -180,11 +180,11 @@ namespace Cooking.Controllers
 
         }
 
-        [Route("meals/")]
+        [Route("meals/{name}")]
         [HttpGet]
-        public async Task<string> List_meals(string Name)
+        public async Task<string> List_meals(string name)
         {
-            string path = "http://www.themealdb.com/api/json/v1/1/search.php?f=" + Name;
+            string path = "http://www.themealdb.com/api/json/v1/1/search.php?f=" + name;
             var client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(path);
             response.EnsureSuccessStatusCode();
@@ -248,10 +248,10 @@ namespace Cooking.Controllers
         [Route("students/{student_id}/meals/{meal_id}/favourite}")]
         [HttpPost]
         [Authorize(Roles = "Student")]
-        public IActionResult Add_Favourite(int user_id,int meal_id)
+        public IActionResult Add_Favourite(int student_id, int meal_id)
         {
 
-           var f= _inner.AddFavourite(user_id, meal_id);
+           var f= _inner.AddFavourite(student_id, meal_id);
             if(f==null) return Ok(new { message = "Already Added " });
           else  return Ok(new {message="Added successfuly"});
 
@@ -260,10 +260,10 @@ namespace Cooking.Controllers
         [Route("students/{student_id}/meals/{meal_id}/favourite")]
         [HttpDelete]
         [Authorize(Roles = "Student")]
-        public IActionResult delete_Favourite(int user_id, int meal_id)
+        public IActionResult delete_Favourite(int student_id, int meal_id)
         {
 
-            _inner.deleteFavourite(user_id, meal_id);
+            _inner.deleteFavourite(student_id, meal_id);
              return Ok(new { message = "deleted successfuly" });
 
         }
@@ -271,7 +271,7 @@ namespace Cooking.Controllers
         [Route("students/{student_id}/meals/all/favourite")]
         [HttpGet]
         [Authorize(Roles = "Student")]
-        public async Task<string> get_Favourite(int user_id)
+        public async Task<string> get_Favourite(int student_id)
         {
             var item="";
             string path = "";
@@ -279,7 +279,7 @@ namespace Cooking.Controllers
             List<Favourite> FavouriteList = new List<Favourite>();
             foreach (Favourite fav in f)
             {
-                if (fav.userid == user_id) FavouriteList.Add(fav);
+                if (fav.userid == student_id) FavouriteList.Add(fav);
             }
             foreach (Favourite fav in FavouriteList)
             {

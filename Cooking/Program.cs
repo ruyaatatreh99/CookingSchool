@@ -57,10 +57,8 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    app.MapControllers();
-});
+app.MapControllers();
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();

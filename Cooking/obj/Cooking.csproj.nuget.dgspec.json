@@ -67,7 +67,7 @@
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
-              "version": "[6.25.0, )"
+              "version": "[6.25.1, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
